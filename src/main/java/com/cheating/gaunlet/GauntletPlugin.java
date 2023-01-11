@@ -8,6 +8,7 @@ import com.cheating.gaunlet.Overlay.OverlayPrayerBox;
 import com.cheating.gaunlet.Overlay.OverlayPrayerWidget;
 import com.cheating.gaunlet.entity.Hunllef;
 import com.cheating.gaunlet.entity.Tornado;
+import com.cheating.Util.NPCCompositionHeadIcon;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,15 +16,7 @@ import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.HeadIcon;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.NullNpcID;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
+import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.events.ConfigChanged;
@@ -324,7 +317,12 @@ public class GauntletPlugin extends Cheat
 
     private boolean isAttackAnimationValid(final int animationId)
     {
-        final HeadIcon headIcon = hunllef.getNpc().getComposition().getOverheadIcon();
+        HeadIcon headIcon = null;
+
+        NPCComposition hunllefComposition = hunllef.getNpc().getComposition();
+        NPCCompositionHeadIcon npcCompositionHeadIcon = new NPCCompositionHeadIcon(client, hunllefComposition);
+        headIcon = npcCompositionHeadIcon.getNPCHeadIcon();
+        System.out.println("The current headIcon determined by reflection is: " + headIcon.name());
 
         if (headIcon == null)
         {
