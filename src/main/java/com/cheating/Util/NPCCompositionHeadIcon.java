@@ -13,8 +13,8 @@ public class NPCCompositionHeadIcon {
     private NPCComposition npcComposition;
     private HeadIcon headIcon;
 
-    final private String className = "gz";
-    final private String fieldName = "aq";
+    final private String className = "go";
+    final private String fieldName = "ah";
 
     public NPCCompositionHeadIcon(Client client, NPCComposition npcComposition) {
         this.client = client;
