@@ -160,7 +160,7 @@ public class TimersOverlay extends Overlay
     private void renderDescendingBoxes(Graphics2D graphics, Prayer prayer, int tick)
     {
         final Color color = tick == 1 ? Color.RED : Color.ORANGE;
-        final Widget prayerWidget = client.getWidget(prayer.getWidgetInfo());
+        final Widget prayerWidget = client.getWidget(prayer.getWidgetInfo().getPackedId());
 
         int baseX = (int) prayerWidget.getBounds().getX();
         baseX += prayerWidget.getBounds().getWidth() / 2;

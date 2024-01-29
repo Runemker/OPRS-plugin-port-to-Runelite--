@@ -3,14 +3,16 @@ package com.cheating.toa.Baba;
 import com.cheating.CheatingConfig;
 import com.cheating.toa.Akkha.Akkha;
 import com.cheating.toa.RoomOverlay;
+import com.cheating.toa.Baba.BabaDangerTile;
 import jdk.vm.ci.meta.Local;
 import net.runelite.api.*;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import org.apache.commons.lang3.ArrayUtils;
-import org.graalvm.compiler.nodes.calc.ObjectEqualsNode;
+// import org.graalvm.compiler.nodes.calc.ObjectEqualsNode;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -284,6 +286,57 @@ public class BabaOverlay extends RoomOverlay {
                 OverlayUtil.renderPolygon(graphics, npc.getConvexHull(), Color.RED,new BasicStroke(3));
             }
         }
+    }
+
+    private void renderBabaTicks(Graphics2D graphics){
+        if(baba.getBabaNPC() != null){
+            String text = "";
+            text = text + baba.babaTicksUntilAttack;
+            Point canvasPoint = baba.getBabaNPC().getCanvasTextLocation(graphics, text, 60);
+            if (canvasPoint != null) {
+                renderTextLocation(graphics, text, Color.white, canvasPoint);
+            }
+        }
+
+    }
+
+    private void renderElementsSequence(Graphics2D graphics){
+        ArrayList<LocalPoint> localPoints = new ArrayList<LocalPoint>();
+
+        for (BabaDangerTile tile : this.baba.getBabaDangerTiles())
+        {
+            //Check if tick counter is drawn
+
+            Color color = Color.WHITE;
+            if (localPoints.size() < 1) color = Color.RED;
+            renderTile(graphics, tile.getLpoint(), config.dangerTileColorToa(), 1, config.dangerTileFillColorToa());
+            LocalPoint lp = tile.getLpoint();
+            if (lp != null) {
+                Point textPoint = Perspective.getCanvasTextLocation(client, graphics, lp, String.valueOf(tile.getTicksLeft()), 0);
+                if (textPoint != null) {
+                    //Add worldpoint to list
+                    localPoints.add(tile.getLpoint());
+                    OverlayUtil.renderTextLocation(graphics,textPoint, String.valueOf(tile.getTicksLeft()), Color.WHITE);
+                }
+            }
+
+        }
+    }
+    public void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color, final double borderWidth, final Color fillColor)
+    {
+        if (dest == null)
+        {
+            return;
+        }
+
+        final Polygon poly = Perspective.getCanvasTilePoly(client, dest);
+
+        if (poly == null)
+        {
+            return;
+        }
+
+        OverlayUtil.renderPolygon(graphics, poly, color, fillColor, new BasicStroke((float) borderWidth));
     }
 
 }

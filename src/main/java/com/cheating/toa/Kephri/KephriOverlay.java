@@ -149,5 +149,30 @@ public class KephriOverlay extends RoomOverlay {
         }
     }
 
+    private void renderElementsSequence(Graphics2D graphics){
+        ArrayList<LocalPoint> localPoints = new ArrayList<LocalPoint>();
+
+        for (KephriDangerTile tile : this.plugin.getKephriDangerTiles())
+        {
+            //Check if tick counter is drawn
+
+            Color color = Color.WHITE;
+            if (localPoints.size() < 1) color = Color.RED;
+
+            renderDangerTile(graphics, tile.getLpoint());
+            LocalPoint lp = tile.getLpoint();
+            if (lp != null) {
+                Point textPoint = Perspective.getCanvasTextLocation(client, graphics, lp, String.valueOf(tile.getTicksLeft()), 0);
+                if (textPoint != null) {
+                    //Add worldpoint to list
+                    localPoints.add(tile.getLpoint());
+                    renderTextLocation(graphics, String.valueOf(tile.getTicksLeft()), Color.WHITE, textPoint);
+                }
+            }
+
+        }
+    }
+
 
 }
+

@@ -10,12 +10,12 @@ import java.util.Queue;
 import javax.inject.Inject;
 
 import com.cheating.CheatingConfig;
+import com.cheating.Util.WidgetInfoExt;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -52,9 +52,9 @@ public abstract class TheatrePrayerOverlay extends Overlay
     @Override
     public Dimension render(Graphics2D graphics)
     {
-        final Widget meleePrayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MELEE);
-        final Widget rangePrayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MISSILES);
-        final Widget magicPrayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MAGIC);
+        final Widget meleePrayerWidget = client.getWidget(WidgetInfoExt.PRAYER_PROTECT_FROM_MELEE.getPackedId());
+        final Widget rangePrayerWidget = client.getWidget(WidgetInfoExt.PRAYER_PROTECT_FROM_MISSILES.getPackedId());
+        final Widget magicPrayerWidget = client.getWidget(WidgetInfoExt.PRAYER_PROTECT_FROM_MAGIC.getPackedId());
 
 
         boolean prayerWidgetHidden = meleePrayerWidget == null
@@ -84,7 +84,7 @@ public abstract class TheatrePrayerOverlay extends Overlay
         getAttackQueue().forEach(attack -> {
             int tick = attack.getTicksUntil();
             final Color color = tick == 1 ? config.prayerColorDanger() : config.prayerColor();
-            final Widget prayerWidget = client.getWidget(attack.getPrayer().getWidgetInfo());
+            final Widget prayerWidget = client.getWidget(attack.getPrayer().getWidgetInfo().getPackedId());
 
             if (prayerWidget == null)
             {
@@ -122,7 +122,7 @@ public abstract class TheatrePrayerOverlay extends Overlay
 
         if (!client.isPrayerActive(attack.getPrayer().getApiPrayer()))
         {
-            final Widget prayerWidget = client.getWidget(attack.getPrayer().getWidgetInfo());
+            final Widget prayerWidget = client.getWidget(attack.getPrayer().getWidgetInfo().getPackedId());
             if (prayerWidget == null)
             {
                 return;

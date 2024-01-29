@@ -27,6 +27,10 @@ public abstract class Room
         this.config = config;
     }
 
+    public void setpackMeth(reflectMeth type){
+
+    }
+
     public void init()
     {
     }

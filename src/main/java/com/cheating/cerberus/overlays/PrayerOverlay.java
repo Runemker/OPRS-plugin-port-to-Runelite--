@@ -94,7 +94,7 @@ public class PrayerOverlay extends Overlay
 
     private void renderDescendingBoxes(final Graphics2D graphics2D, final Prayer prayer, final int tick)
     {
-        final Widget prayerWidget = client.getWidget(prayer.getWidgetInfo());
+        final Widget prayerWidget = client.getWidget(prayer.getWidgetInfo().getPackedId());
 
         if (prayerWidget == null || prayerWidget.isHidden())
         {

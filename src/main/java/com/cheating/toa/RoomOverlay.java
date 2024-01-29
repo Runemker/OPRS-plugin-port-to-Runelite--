@@ -46,13 +46,10 @@ public abstract class RoomOverlay extends Overlay
         GUIOverlayUtil.drawTiles(graphics, client, point, client.getLocalPlayer().getWorldLocation(), color, strokeWidth, outlineAlpha, fillAlpha);
     }
 
-    public void renderTextLocation(Graphics2D graphics, String txtString, Color fontColor, Point canvasPoint)
-    {
-        if (canvasPoint != null)
-        {
-            graphics.setFont(new Font(FontManager.getRunescapeSmallFont().toString(), config.fontStylePAT().getFont(), config.theatreFontSize()));
-            final Point canvasCenterPoint = new Point(canvasPoint.getX(), canvasPoint.getY());
-            final Point canvasCenterPoint_shadow = new Point(canvasPoint.getX() + 1, canvasPoint.getY() + 1);
+    protected void renderTextLocation(Graphics2D graphics, String txtString, Color fontColor, Point canvasPoint) {
+        if (canvasPoint != null) {
+            Point canvasCenterPoint = new Point(canvasPoint.getX(), canvasPoint.getY());
+            Point canvasCenterPoint_shadow = new Point(canvasPoint.getX() + 1, canvasPoint.getY() + 1);
             OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
             OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
         }
@@ -111,6 +108,25 @@ public abstract class RoomOverlay extends Overlay
             }
         }
     }
+
+    protected void renderColorTile(Graphics2D graphics, LocalPoint lp, Color outline, Color fill){
+        Color outlineColor = outline;
+        Color fillColor = fill;
+        int size = 1;
+
+        if (lp != null)
+        {
+            lp = new LocalPoint(lp.getX() + size * 128 / 2 - 64, lp.getY() + size * 128 / 2 - 64);
+            Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+            if (tilePoly != null)
+            {
+                renderPoly(graphics, outlineColor, fillColor, tilePoly, 2, true);
+            }
+        }
+    }
+
+
+
 
     protected void renderTrueTile(Graphics2D graphics, NPC npc, int size){
         Color outlineColor = config.trueTileColorToa();

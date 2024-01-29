@@ -23,7 +23,7 @@ import javax.inject.Inject;
 
 @Slf4j
 @PluginDescriptor(
-        name = "Cheating",
+        name = "<html><font color=#6b8af6>Cheating</font></html>",
         description = "Ayyyyy"
 )
 public class CheatingPlugin extends Plugin {

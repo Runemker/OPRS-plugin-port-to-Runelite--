@@ -6,6 +6,7 @@ import com.cheating.toa.RoomOverlay;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -59,61 +60,61 @@ public class ScarabasOverlay extends RoomOverlay {
                 case 45388:
                 case 45365:
                 case 45356:
-                    renderMatchingTile(graphics, Color.black, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.black, object.getWorldLocation(), "A");
                     break;
                 //knives
                 case 45389:
                 case 45366:
                 case 45357:
-                    renderMatchingTile(graphics, Color.red, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.red, object.getWorldLocation(), "B");
                     break;
                 //crook
                 case 45386:
                 case 45367:
                 case 45358:
-                    renderMatchingTile(graphics, Color.MAGENTA, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.MAGENTA, object.getWorldLocation(), "C");
                     break;
                 //diamond
                 case 45391:
                 case 45368:
                 case 45359:
-                    renderMatchingTile(graphics, Color.blue, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.blue, object.getWorldLocation(), "D");
                     break;
                 //hand
                 case 45392:
                 case 45369:
                 case 45360:
-                    renderMatchingTile(graphics, Color.LIGHT_GRAY, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.LIGHT_GRAY, object.getWorldLocation(), "E");
                     break;
                 //star
                 case 45387:
                 case 45370:
                 case 45361:
-                    renderMatchingTile(graphics, Color.CYAN, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.CYAN, object.getWorldLocation(), "F");
                     break;
                 //bird
                 case 45393:
                 case 45371:
                 case 45362:
-                    renderMatchingTile(graphics, Color.PINK, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.PINK, object.getWorldLocation(), "G");
                     break;
                 //wiggle
                 case 45394:
                 case 45372:
                 case 45363:
-                    renderMatchingTile(graphics, Color.YELLOW, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.YELLOW, object.getWorldLocation(), "H");
                     break;
                 //boot
                 case 45395:
                 case 45373:
                 case 45364:
-                    renderMatchingTile(graphics, Color.GREEN, object.getWorldLocation());
+                    renderMatchingTile(graphics, Color.GREEN, object.getWorldLocation(), "I");
                     break;
             }
         }
     }
 
-    private void renderMatchingTile(Graphics2D graphics, Color color, WorldPoint wp){
+    private void renderMatchingTile(Graphics2D graphics, Color color, WorldPoint wp,String text){
         LocalPoint lp = LocalPoint.fromWorld(client, wp);
         Polygon canvasTilePoly = Perspective.getCanvasTilePoly(client, lp);
         if (canvasTilePoly == null)
@@ -121,5 +122,12 @@ public class ScarabasOverlay extends RoomOverlay {
             return;
         }
         OverlayUtil.renderPolygon(graphics, canvasTilePoly, color);
+        Point textPoint = Perspective.getCanvasTextLocation(client, graphics, lp, text, 0);
+        if (textPoint != null)
+        {
+            //Add worldpoint to list
+            renderTextLocation(graphics, text, Color.WHITE, textPoint);
+        }
+
     }
 }

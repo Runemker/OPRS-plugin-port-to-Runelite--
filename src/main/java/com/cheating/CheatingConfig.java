@@ -126,6 +126,14 @@ public interface CheatingConfig extends Config
     String toaPrayer = "TOA: Prayer helper";
 
     @ConfigSection(
+            name = "TOA: Wardens",
+            description = "",
+            position = 31,
+            closedByDefault = true
+    )
+    String toaWardens= "TOA: Wardens";
+
+    @ConfigSection(
             name = "Maiden",
             description = "",
             position = 100,
@@ -4232,6 +4240,14 @@ public interface CheatingConfig extends Config
         return true;
     }
 
+    @ConfigItem(
+            position = 5,
+            keyName = "ticksrenderOnBaba",
+            name = "Ticks on Baba",
+            description = "Renders ticks till next attack on baba.",
+            section = toaApmeken
+    )
+    default boolean babaRenderTicks() {return true;}
 
     @ConfigItem(
             position = 11,
@@ -4331,7 +4347,44 @@ public interface CheatingConfig extends Config
         return true;
     }
 
+    @ConfigItem(
+            position = 0,
+            keyName = "Wardenballticks",
+            name = "Waden Ballticks onplayer",
+            description = "Shows ticks till ball hits player",
+            section = toaWardens
+    )
+    default boolean wardenObeliskBallTicks()
+    {
+        return true;
+    }
 
+    @Alpha
+    @ConfigItem(
+            position = 1,
+            keyName = "boulderoutline",
+            name = "Boulder falling P3 tile outline",
+            description = "",
+            section = toaWardens
+    )
+    default Color wardenBoulderOutline()
+    {
+        return new Color(255, 0, 0, 20);
+    }
+
+    @Alpha
+    @ConfigItem(
+            position = 2,
+            keyName = "boulderFill",
+            name = "Boulder falling P3 tile fill",
+            description = "",
+            section = toaWardens
+    )
+
+    default Color wadernBoulderFill()
+    {
+        return new Color(255, 0, 0, 20);
+    }
 
     //ENUM
     enum BLOATTIMEDOWN

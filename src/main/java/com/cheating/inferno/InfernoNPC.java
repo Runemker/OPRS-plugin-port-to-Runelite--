@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cheating.Util.Prayer;
+import com.cheating.Util.WorldAreaExtended;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -129,7 +130,7 @@ class InfernoNPC
                 return false;
             }
 
-            final WorldArea predictedWorldArea = currentWorldArea.calculateNextTravellingPoint(client, targetArea, true, x ->
+            final WorldArea predictedWorldArea = WorldAreaExtended.calculateNextTravellingPoint(client, currentWorldArea, targetArea, true, x ->
             {
                 for (WorldPoint obstacle : realObstacles)
                 {

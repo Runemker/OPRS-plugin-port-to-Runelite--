@@ -2,6 +2,7 @@ package com.cheating.inferno;
 import com.cheating.CheatingConfig;
 import com.cheating.inferno.displaymodes.InfernoPrayerDisplayMode;
 import com.cheating.inferno.displaymodes.InfernoSafespotDisplayMode;
+import com.cheating.Util.WidgetInfoExt;
 import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -26,7 +27,6 @@ import net.runelite.api.Prayer;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -58,9 +58,9 @@ public class InfernoOverlay extends Overlay
     @Override
     public Dimension render(Graphics2D graphics)
     {
-        final Widget meleePrayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MELEE);
-        final Widget rangePrayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MISSILES);
-        final Widget magicPrayerWidget = client.getWidget(WidgetInfo.PRAYER_PROTECT_FROM_MAGIC);
+        final Widget meleePrayerWidget = client.getWidget(WidgetInfoExt.PRAYER_PROTECT_FROM_MELEE.getPackedId());
+        final Widget rangePrayerWidget = client.getWidget(WidgetInfoExt.PRAYER_PROTECT_FROM_MISSILES.getPackedId());
+        final Widget magicPrayerWidget = client.getWidget(WidgetInfoExt.PRAYER_PROTECT_FROM_MAGIC.getPackedId());
 
         if (config.indicateObstacles())
         {
@@ -488,7 +488,7 @@ public class InfernoOverlay extends Overlay
                 //TODO: Config values for these colors
                 final Color color = (tick == 1 && currentAttack == bestAttack) ? Color.RED : Color.ORANGE;
 
-                final Widget prayerWidget = client.getWidget(currentAttack.getPrayer().getWidgetInfo());
+                final Widget prayerWidget = client.getWidget(currentAttack.getPrayer().getWidgetInfo().getPackedId());
 
                 int baseX = (int) prayerWidget.getBounds().getX();
                 baseX += prayerWidget.getBounds().getWidth() / 2;
@@ -533,7 +533,7 @@ public class InfernoOverlay extends Overlay
 
             if (plugin.getClosestAttack() != prayerForAttack || config.indicateWhenPrayingCorrectly())
             {
-                final Widget prayerWidget = client.getWidget(plugin.getClosestAttack().getPrayer().getWidgetInfo());
+                final Widget prayerWidget = client.getWidget(plugin.getClosestAttack().getPrayer().getWidgetInfo().getPackedId());
                 final Rectangle prayerRectangle = new Rectangle((int) prayerWidget.getBounds().getWidth(),
                         (int) prayerWidget.getBounds().getHeight());
                 prayerRectangle.translate((int) prayerWidget.getBounds().getX(), (int) prayerWidget.getBounds().getY());

@@ -10,16 +10,15 @@ import com.google.common.annotations.VisibleForTesting;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.NPC;
-import net.runelite.api.Renderable;
+import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.eventbus.Subscribe;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Slf4j
@@ -46,7 +45,8 @@ public class Kephri extends Room {
 
     public static final int SWARM_ID = 11723;
 
-
+    @Getter
+    private LinkedHashSet<KephriDangerTile> KephriDangerTiles = new LinkedHashSet<>();
     @Inject
     protected Kephri(CheatingPlugin plugin, CheatingConfig config)
     {
@@ -75,6 +75,27 @@ public class Kephri extends Room {
     {
         overlayManager.remove(kephriOverlay);
         hooks.unregisterRenderableDrawListener(drawListener);
+        KephriDangerTiles.clear();
+    }
+
+    @Subscribe
+    public void onGraphicsObjectCreated(GraphicsObjectCreated event){
+        GraphicsObject object = event.getGraphicsObject();
+        if (!inRoomRegion(ToaPlugin.KEPHRI_REGION))
+        {
+            return;
+        }
+        switch (object.getId()){
+            case 1447:
+                KephriDangerTiles.add(new KephriDangerTile(object.getLocation(), 4));
+                break;
+            case 1446:
+                KephriDangerTiles.add(new KephriDangerTile(object.getLocation(), 3));
+                break;
+            case 2111:
+                KephriDangerTiles.add(new KephriDangerTile(object.getLocation(), 2));
+                break;
+        }
     }
 
     @Subscribe
@@ -83,6 +104,18 @@ public class Kephri extends Room {
             kephriActive = false;
             return;
         }
+
+        LinkedHashSet<KephriDangerTile> tempTiles = new LinkedHashSet<>();
+        for (KephriDangerTile tile : KephriDangerTiles){
+            if ((tile.getTicksLeft()-1)>=0){
+                tempTiles.add(new KephriDangerTile(tile.getLpoint(), tile.getTicksLeft()-1));
+            }
+        }
+
+        KephriDangerTiles = tempTiles;
+        //log.info(String.valueOf(KephriDangerTiles.size()));
+
+
         kephriActive = true;
 
         if (flyTicks > 0)

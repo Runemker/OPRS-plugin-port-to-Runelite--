@@ -25,7 +25,7 @@ public class GUIOverlayUtil
 
     public static Rectangle renderPrayerOverlay(Graphics2D graphics, Client client, Prayer prayer, Color color)
     {
-        Widget widget = client.getWidget(prayer.getWidgetInfo());
+        Widget widget = client.getWidget(prayer.getWidgetInfo().getPackedId());
 
         if (widget == null || client.getVarcIntValue(VarClientInt.INVENTORY_TAB) != InterfaceTab.PRAYER.getId())
         {

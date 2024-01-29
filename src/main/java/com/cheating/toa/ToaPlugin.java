@@ -11,6 +11,7 @@ import com.cheating.toa.Het.Het;
 import com.cheating.toa.Kephri.Kephri;
 import com.cheating.toa.Scarabas.Scarabas;
 import com.cheating.toa.Zebak.Zebak;
+import com.cheating.toa.Warden.Warden;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,8 @@ import net.runelite.api.events.*;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class ToaPlugin extends Cheat {
@@ -65,10 +68,16 @@ public class ToaPlugin extends Cheat {
     private Apmeken apmeken;
 
     @Inject
+    private Warden warden;
+
+    @Inject
     @Getter(AccessLevel.NONE)
     private ToaDebugBox toaDebugBox;
 
+    @Inject
+    private reflectPackMeth packetSM;
 
+    private reflectMeth packet;
     @Inject
     private Client client;
 
@@ -81,13 +90,14 @@ public class ToaPlugin extends Cheat {
 
         if (rooms == null)
         {
-            rooms = new Room[]{akkha, het, zebak, kephri, scarabas, baba, apmeken};
+            rooms = new Room[]{akkha, het, zebak, kephri, scarabas, baba, apmeken, warden};
 
 
             for (Room room : rooms)
             {
                 log.info("Checking room");
                 room.init();
+                room.setpackMeth(packet);
             }
         }
 
@@ -109,6 +119,23 @@ public class ToaPlugin extends Cheat {
         {
             room.unload();
         }
+        //List<Prayer> test = new ArrayList<>();
+        //test.add(0, Prayer.PROTECT_FROM_MELEE);
+        //packet.toggleNormalPrayer(Prayer.PROTECT_FROM_MISSILES.getWidgetInfo().getPackedId());
+        //packet.toggleNormalPrayers(test);
+        //packet.toggleNormalPrayer(Prayer.PROTECT_FROM_MISSILES.getWidgetInfo().getPackedId());
+        packet = null;
+    }
+
+    public void itemSwitch(String itemListStr){
+        List<Integer> item = new ArrayList<Integer>();
+        if(itemListStr != ""){
+            String[] items = itemListStr.split(",");
+            for(String itemStr:items){
+                item.add(Integer.parseInt(itemStr));
+            }
+        }
+        packet.equipItems(item);
     }
 
     @Override
@@ -118,6 +145,7 @@ public class ToaPlugin extends Cheat {
         kephri.onGameTick(event);
         scarabas.onGameTick(event);
         baba.onGameTick(event);
+        warden.onGameTick(event);
     }
 
     @Override
@@ -136,6 +164,10 @@ public class ToaPlugin extends Cheat {
     @Override
     public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectC) {
         zebak.onGraphicsObjectCreated(graphicsObjectC);
+        warden.onGraphicsObjectCreated(graphicsObjectC);
+        kephri.onGraphicsObjectCreated(graphicsObjectC);
+        baba.onGraphicsObjectCreated(graphicsObjectC);
+
     }
 
     @Override
